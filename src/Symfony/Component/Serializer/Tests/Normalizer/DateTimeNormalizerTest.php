@@ -237,23 +237,10 @@ class DateTimeNormalizerTest extends TestCase
 
     public function testSupportsDenormalizationUsingSupportedTypesPassedInConstructor()
     {
-        $normalizer = new DateTimeNormalizer([DateTimeNormalizer::SUPPORTED_TYPES_KEY => [DateTimeChild::class => true, DateTimeImmutableChild::class => true]]);
+        $normalizer = new DateTimeNormalizer(supportedTypes: [DateTimeChild::class => true, DateTimeImmutableChild::class => true]);
         $this->assertTrue($normalizer->supportsDenormalization('2016-01-01T00:00:00+00:00', DateTimeImmutableChild::class));
         $this->assertTrue($normalizer->supportsDenormalization('2016-01-01T00:00:00+00:00', DateTimeChild::class));
-    }
-
-    public function testSupportsDenormalizationUsingSupportedTypesPassedInContext()
-    {
-        $context = [
-            DateTimeNormalizer::SUPPORTED_TYPES_KEY => [
-                DateTimeChild::class => true, DateTimeImmutableChild::class => true,
-            ],
-        ];
-        $normalizer = new DateTimeNormalizer();
-        $this->assertFalse($normalizer->supportsDenormalization('2016-01-01T00:00:00+00:00', DateTimeImmutableChild::class));
-        $this->assertFalse($normalizer->supportsDenormalization('2016-01-01T00:00:00+00:00', DateTimeChild::class));
-        $this->assertTrue($normalizer->supportsDenormalization('2016-01-01T00:00:00+00:00', DateTimeImmutableChild::class, context: $context));
-        $this->assertTrue($normalizer->supportsDenormalization('2016-01-01T00:00:00+00:00', DateTimeChild::class, context: $context));
+        $this->assertFalse($normalizer->supportsDenormalization('2016-01-01T00:00:00+00:00', \DateTime::class));
     }
 
     public function testDenormalize()
