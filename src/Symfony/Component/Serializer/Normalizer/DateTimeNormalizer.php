@@ -40,6 +40,9 @@ final class DateTimeNormalizer implements NormalizerInterface, DenormalizerInter
 
     private array $supportedTypes;
 
+    /**
+     * @param string[]|null $supportedTypes
+     */
     public function __construct(array $defaultContext = [], ?array $supportedTypes = null)
     {
         $this->setDefaultContext($defaultContext);
