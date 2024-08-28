@@ -32,12 +32,6 @@ final class DateTimeNormalizer implements NormalizerInterface, DenormalizerInter
         self::CAST_KEY => null,
     ];
 
-    private const SUPPORTED_TYPES = [
-        \DateTimeInterface::class => true,
-        \DateTimeImmutable::class => true,
-        \DateTime::class => true,
-    ];
-
     public function __construct(array $defaultContext = [])
     {
         $this->setDefaultContext($defaultContext);
@@ -50,7 +44,7 @@ final class DateTimeNormalizer implements NormalizerInterface, DenormalizerInter
 
     public function getSupportedTypes(?string $format): array
     {
-        return self::SUPPORTED_TYPES;
+        return [\DateTimeInterface::class];
     }
 
     /**
