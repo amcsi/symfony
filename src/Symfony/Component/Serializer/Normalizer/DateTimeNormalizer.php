@@ -26,27 +26,21 @@ final class DateTimeNormalizer implements NormalizerInterface, DenormalizerInter
     public const TIMEZONE_KEY = 'datetime_timezone';
     public const CAST_KEY = 'datetime_cast';
 
-    public const DEFAULT_SUPPORTED_TYPES = [
-        \DateTimeInterface::class => true,
-        \DateTimeImmutable::class => true,
-        \DateTime::class => true,
-    ];
-
     private array $defaultContext = [
         self::FORMAT_KEY => \DateTimeInterface::RFC3339,
         self::TIMEZONE_KEY => null,
         self::CAST_KEY => null,
     ];
 
-    private array $supportedTypes;
+    private const SUPPORTED_TYPES = [
+        \DateTimeInterface::class => true,
+        \DateTimeImmutable::class => true,
+        \DateTime::class => true,
+    ];
 
-    /**
-     * @param string[]|null $supportedTypes
-     */
-    public function __construct(array $defaultContext = [], ?array $supportedTypes = null)
+    public function __construct(array $defaultContext = [])
     {
         $this->setDefaultContext($defaultContext);
-        $this->supportedTypes = $supportedTypes ?? self::DEFAULT_SUPPORTED_TYPES;
     }
 
     public function setDefaultContext(array $defaultContext): void
@@ -56,7 +50,7 @@ final class DateTimeNormalizer implements NormalizerInterface, DenormalizerInter
 
     public function getSupportedTypes(?string $format): array
     {
-        return $this->supportedTypes;
+        return self::SUPPORTED_TYPES;
     }
 
     /**
@@ -144,7 +138,7 @@ final class DateTimeNormalizer implements NormalizerInterface, DenormalizerInter
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $this->supportedTypes[$type] ?? false;
+        return is_a($type, \DateTimeInterface::class, true);
     }
 
     /**
